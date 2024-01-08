@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebook_app_id">398063742569942</string>
+    <string name="fb_login_protocol_scheme">fb398063742569942</string>
+    <string name="facebook_client_token">c8df3b20f8e2cde53c9f8ea33bfddc9f</string>
+    <string name="app_name">Sylas Ai</string>
+</resources>
+
