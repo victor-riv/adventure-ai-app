@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sylas_ai/auth/backend/authenticator.dart';
-import 'package:sylas_ai/auth/models/auth_result.dart';
-import 'package:sylas_ai/auth/notifiers/auth_state_provider.dart';
-import 'package:sylas_ai/screens/models/login_form_state/log_in_form_state.dart';
 
-final emailTextProvider = StateProvider<String>((ref) => '');
-final passwordTextProvider = StateProvider<String>((ref) => '');
-final isLoadingProvider = StateProvider<bool>((ref) => false);
+import '../auth/backend/authenticator.dart';
+import '../auth/models/auth_result.dart';
+import '../auth/notifiers/auth_state_provider.dart';
+import 'models/login_form_state/providers/log_in_form_state_provider.dart';
 
 class SignUpSheet extends ConsumerWidget {
   SignUpSheet({super.key});
 
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final buttonHeight = 50.0; // Set the height for buttons
 
   Widget _buildSignUpScreen(BuildContext context, WidgetRef ref) {
-    const buttonHeight = 50.0; // Set the height for buttons
-
-    final email = ref.watch(emailTextProvider);
-    final password = ref.watch(passwordTextProvider);
-
     final authstate = ref.watch(authStateProvider);
+    final formState = ref.watch(loginFormStateNotiferProvider);
+    final formStateNotifier = ref.watch(loginFormStateNotiferProvider.notifier);
+
+    // TODO: Look for a better way to do this
+    OutlineInputBorder? myCustomBorder(fieldError) {
+      if (fieldError == 'email') {
+        return OutlineInputBorder(
+          borderSide: BorderSide(
+            color: formState.emailError ? Colors.red : Colors.black,
+            width: 2.0, // Adjust border width here
+          ),
+          borderRadius: BorderRadius.circular(20.0),
+        );
+      } else if (fieldError == 'password') {
+        return OutlineInputBorder(
+          borderSide: BorderSide(
+            color: formState.passwordError ? Colors.red : Colors.black,
+            width: 2.0, // Adjust border width here
+          ),
+          borderRadius: BorderRadius.circular(20.0),
+        );
+      } else {
+        return null;
+      }
+    }
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
@@ -44,82 +62,49 @@ class SignUpSheet extends ConsumerWidget {
             )),
             const SizedBox(height: 30),
             SizedBox(
-              height: ref.watch(loginFormStateProvider).emailError
-                  ? 70
-                  : buttonHeight,
+              height: formState.emailError ? 70 : buttonHeight,
               child: TextFormField(
                 controller: emailController,
                 onChanged: (value) {
-                  if (ref.watch(loginFormStateProvider).emailError) {
-                    ref.watch(loginFormStateProvider.notifier).clearErrors();
+                  if (formState.emailError) {
+                    formStateNotifier.clearEmailError();
                   }
-                  ref
-                      .watch(loginFormStateProvider.notifier)
-                      .setEmail(value.trim());
+                  formStateNotifier.setEmail(value.trim());
                 },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  errorText: ref.watch(loginFormStateProvider).emailError
-                      ? ref.watch(loginFormStateProvider).emailErrorText
-                      : null,
+                  errorText:
+                      formState.emailError ? formState.emailErrorText : null,
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: ref.watch(loginFormStateProvider).emailError
-                          ? Colors.red
-                          : Colors.black,
-                      width: 2.0, // Adjust border width here
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: ref.watch(loginFormStateProvider).emailError
-                          ? Colors.red
-                          : Colors.black,
-                      width: 2.0, // Adjust border width here
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: ref.watch(loginFormStateProvider).emailError
-                          ? Colors.red
-                          : Colors.black,
-                      width: 2.0, // Adjust border width here
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
+                  errorBorder: myCustomBorder('email'),
+                  focusedBorder: myCustomBorder('email'),
+                  enabledBorder: myCustomBorder('email'),
                 ),
                 // Handle username input
               ),
             ),
             const SizedBox(height: 20),
             SizedBox(
-              height: ref.watch(loginFormStateProvider).passwordError
-                  ? 70
-                  : buttonHeight,
+              height: formState.passwordError ? 70 : buttonHeight,
               child: TextFormField(
                 controller: passwordController,
                 onChanged: (value) {
-                  if (ref.watch(loginFormStateProvider).passwordError) {
-                    ref.watch(loginFormStateProvider.notifier).clearErrors();
+                  if (formState.passwordError) {
+                    formStateNotifier.clearPasswordError();
                   }
-                  ref
-                      .watch(loginFormStateProvider.notifier)
-                      .setPassword(value.trim());
+                  formStateNotifier.setPassword(value.trim());
                 },
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  errorText: ref.watch(loginFormStateProvider).passwordError
-                      ? ref.watch(loginFormStateProvider).passwordErrorText
+                  errorText: formState.passwordError
+                      ? formState.passwordErrorText
                       : null,
                   filled: true,
                   fillColor: Colors.white,
@@ -127,29 +112,9 @@ class SignUpSheet extends ConsumerWidget {
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: ref.watch(loginFormStateProvider).passwordError
-                          ? Colors.red
-                          : Colors.black,
-                      width: 2.0, // Adjust border width here
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 2.0, // Adjust border width here
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
-                      width: 2.0, // Adjust border width here
-                    ),
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
+                  errorBorder: myCustomBorder('password'),
+                  focusedBorder: myCustomBorder('password'),
+                  enabledBorder: myCustomBorder('password'),
                 ),
                 // Handle username input
               ),
@@ -165,19 +130,15 @@ class SignUpSheet extends ConsumerWidget {
 
                         // TODO: Before we begin anything, validate that the fields are not empty
 
-                        ref
-                            .watch(loginFormStateProvider.notifier)
-                            .validateEmail();
+                        formStateNotifier.validateEmail();
+                        formStateNotifier.validatePassword();
 
-                        if (ref.read(loginFormStateProvider).emailError ||
-                            ref.read(loginFormStateProvider).passwordError) {
-                          return;
-                        }
-
-                        if (ref.read(loginFormStateProvider).password == '') {
-                          ref
-                              .watch(loginFormStateProvider.notifier)
-                              .validate(true, "Password field can't be empty");
+                        if (ref
+                                .watch(loginFormStateNotiferProvider)
+                                .emailError ||
+                            ref
+                                .watch(loginFormStateNotiferProvider)
+                                .passwordError) {
                           return;
                         }
 
@@ -187,13 +148,11 @@ class SignUpSheet extends ConsumerWidget {
 
                         final response = await const Authenticator()
                             .loginWithEmailandPassword(
-                                ref.read(loginFormStateProvider).email,
-                                ref.read(loginFormStateProvider).password);
+                                formState.email, formState.password);
 
                         if (response.result == AuthResult.failure) {
-                          ref
-                              .watch(loginFormStateProvider.notifier)
-                              .validate(true, response.errorMessage!);
+                          formStateNotifier.validate(
+                              true, response.errorMessage!);
                           ref
                               .watch(authStateProvider.notifier)
                               .updateIsLoading(false);
@@ -205,7 +164,7 @@ class SignUpSheet extends ConsumerWidget {
                         passwordController.clear();
 
                         // Reset the state
-                        ref.watch(loginFormStateProvider.notifier).resetState();
+                        formStateNotifier.resetState();
 
                         ref
                             .watch(authStateProvider.notifier)
@@ -354,7 +313,6 @@ class SignUpSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final isLoading = ref.watch(isLoadingProvider.notifier).state;
     return _buildSignUpScreen(context, ref);
   }
 }
