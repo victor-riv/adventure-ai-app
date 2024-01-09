@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sylas_ai/auth/backend/authenticator.dart';
+import 'package:sylas_ai/auth/models/auth_result.dart';
 import 'package:sylas_ai/auth/notifiers/auth_state_provider.dart';
+import 'package:sylas_ai/screens/models/login_form_state/log_in_form_state.dart';
 
 final emailTextProvider = StateProvider<String>((ref) => '');
 final passwordTextProvider = StateProvider<String>((ref) => '');
@@ -42,31 +44,54 @@ class SignUpSheet extends ConsumerWidget {
             )),
             const SizedBox(height: 30),
             SizedBox(
-              height: buttonHeight,
+              height: ref.watch(loginFormStateProvider).emailError
+                  ? 70
+                  : buttonHeight,
               child: TextFormField(
                 controller: emailController,
                 onChanged: (value) {
-                  ref.watch(emailTextProvider.notifier).state = value.trim();
+                  if (ref.watch(loginFormStateProvider).emailError) {
+                    ref.watch(loginFormStateProvider.notifier).clearErrors();
+                  }
+                  ref
+                      .watch(loginFormStateProvider.notifier)
+                      .setEmail(value.trim());
                 },
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   labelText: 'Email',
+                  errorText: ref.watch(loginFormStateProvider).emailError
+                      ? ref.watch(loginFormStateProvider).emailErrorText
+                      : null,
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
                     borderRadius: BorderRadius.circular(20.0),
                   ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: ref.watch(loginFormStateProvider).emailError
+                          ? Colors.red
+                          : Colors.black,
+                      width: 2.0, // Adjust border width here
+                    ),
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
+                    borderSide: BorderSide(
+                      color: ref.watch(loginFormStateProvider).emailError
+                          ? Colors.red
+                          : Colors.black,
                       width: 2.0, // Adjust border width here
                     ),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.black,
+                    borderSide: BorderSide(
+                      color: ref.watch(loginFormStateProvider).emailError
+                          ? Colors.red
+                          : Colors.black,
                       width: 2.0, // Adjust border width here
                     ),
                     borderRadius: BorderRadius.circular(20.0),
@@ -77,19 +102,38 @@ class SignUpSheet extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             SizedBox(
-              height: buttonHeight,
+              height: ref.watch(loginFormStateProvider).passwordError
+                  ? 70
+                  : buttonHeight,
               child: TextFormField(
                 controller: passwordController,
                 onChanged: (value) {
-                  ref.read(passwordTextProvider.notifier).state = value.trim();
+                  if (ref.watch(loginFormStateProvider).passwordError) {
+                    ref.watch(loginFormStateProvider.notifier).clearErrors();
+                  }
+                  ref
+                      .watch(loginFormStateProvider.notifier)
+                      .setPassword(value.trim());
                 },
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
+                  errorText: ref.watch(loginFormStateProvider).passwordError
+                      ? ref.watch(loginFormStateProvider).passwordErrorText
+                      : null,
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: ref.watch(loginFormStateProvider).passwordError
+                          ? Colors.red
+                          : Colors.black,
+                      width: 2.0, // Adjust border width here
+                    ),
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -118,20 +162,50 @@ class SignUpSheet extends ConsumerWidget {
                     ? null
                     : () async {
                         FocusScope.of(context).unfocus();
+
+                        // TODO: Before we begin anything, validate that the fields are not empty
+
+                        ref
+                            .watch(loginFormStateProvider.notifier)
+                            .validateEmail();
+
+                        if (ref.read(loginFormStateProvider).emailError ||
+                            ref.read(loginFormStateProvider).passwordError) {
+                          return;
+                        }
+
+                        if (ref.read(loginFormStateProvider).password == '') {
+                          ref
+                              .watch(loginFormStateProvider.notifier)
+                              .validate(true, "Password field can't be empty");
+                          return;
+                        }
+
                         ref
                             .watch(authStateProvider.notifier)
                             .updateIsLoading(true);
 
-                        await const Authenticator()
-                            .loginWithEmailandPassword(email, password);
+                        final response = await const Authenticator()
+                            .loginWithEmailandPassword(
+                                ref.read(loginFormStateProvider).email,
+                                ref.read(loginFormStateProvider).password);
+
+                        if (response.result == AuthResult.failure) {
+                          ref
+                              .watch(loginFormStateProvider.notifier)
+                              .validate(true, response.errorMessage!);
+                          ref
+                              .watch(authStateProvider.notifier)
+                              .updateIsLoading(false);
+                          return;
+                        }
 
                         // Clear text fields after account creation
                         emailController.clear();
                         passwordController.clear();
 
                         // Reset the state
-                        ref.watch(emailTextProvider.notifier).state = '';
-                        ref.watch(passwordTextProvider.notifier).state = '';
+                        ref.watch(loginFormStateProvider.notifier).resetState();
 
                         ref
                             .watch(authStateProvider.notifier)

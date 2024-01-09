@@ -11,6 +11,13 @@ extension Log on Object {
   void log() => devtools.log(toString());
 }
 
+class AuthResultWithMessage {
+  AuthResult result;
+  String? errorMessage;
+
+  AuthResultWithMessage({required this.result, this.errorMessage});
+}
+
 class Authenticator {
   const Authenticator();
 
@@ -26,7 +33,7 @@ class Authenticator {
     await FacebookAuth.instance.logOut();
   }
 
-  Future<AuthResult> loginWithEmailandPassword(
+  Future<AuthResultWithMessage> loginWithEmailandPassword(
       String email, String password) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
@@ -34,21 +41,28 @@ class Authenticator {
 
       // User creation successful, you can navigate to another screen or perform additional tasks.
       userCredential.log();
-      return AuthResult.success;
+      return AuthResultWithMessage(result: AuthResult.success);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
-        return AuthResult.failure;
+        return AuthResultWithMessage(
+            result: AuthResult.failure,
+            errorMessage: 'The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
-        return AuthResult.failure;
+        return AuthResultWithMessage(
+            result: AuthResult.failure,
+            errorMessage: 'The account already exists for that email.');
       }
       // Handle other exceptions as needed
     } catch (e) {
-      print(e.toString());
-      return AuthResult.failure;
+      // print(e.toString());
+      return AuthResultWithMessage(
+          result: AuthResult.failure, errorMessage: e.toString());
     }
-    return AuthResult.failure;
+    return AuthResultWithMessage(
+        result: AuthResult.failure,
+        errorMessage: 'An error has ocurred. Please try again.');
   }
 
   Future<AuthResult> loginWithFacebook() async {
