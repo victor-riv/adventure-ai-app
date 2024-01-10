@@ -26,7 +26,7 @@ class MyNeuCard extends StatelessWidget {
   ///
   ///
   ///
-  MyNeuCard({
+  const MyNeuCard({
     Key? key,
     this.offset = NeuConstants.neuOffset,
     this.cardColor,
@@ -41,7 +41,7 @@ class MyNeuCard extends StatelessWidget {
     this.imageBorderWidth = NeuConstants.neuBorder,
     this.shadowBlurStyle = NeuConstants.neuBlurStyle,
     this.child,
-    this.borderRadius,
+    this.borderRadius = NeuConstants.neuBorderRadius,
   }) : super(key: key);
 
   /// - offset : An Offset that defines the amount and direction of the blur applied to the shadow of the card.

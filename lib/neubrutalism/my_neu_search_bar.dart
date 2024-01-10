@@ -36,7 +36,7 @@ class MyNeuSearchBar extends StatelessWidget {
       this.shadowBlurRadius = NeuConstants.neuShadowBlurRadius,
       this.leadingIcon,
       this.shadowOffset = NeuConstants.neuOffset,
-      this.borderRadius,
+      this.borderRadius = NeuConstants.neuBorderRadius,
       this.borderColor = NeuConstants.neuBlack,
       this.searchBarColor,
       this.shadowColor = NeuConstants.neuShadow,
@@ -139,7 +139,7 @@ class MyNeuSearchBar extends StatelessWidget {
     return MyNeuContainer(
       height: searchBarHeight,
       width: searchBarWidth ?? 300,
-      borderRadius: borderRadius ?? BorderRadius.circular(15),
+      borderRadius: borderRadius,
       color: searchBarColor ?? const Color.fromARGB(255, 214, 140, 164),
       borderColor: borderColor,
       borderWidth: borderWidth,

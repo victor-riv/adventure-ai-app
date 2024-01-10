@@ -254,11 +254,10 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 40),
             SizedBox(
               height: buttonHeight,
-              child: MyNeuContainer(
-                offset: const Offset(0, 0),
+              child: const MyNeuContainer(
+                offset: Offset(0, 0),
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(width: 50),
@@ -286,11 +285,10 @@ class SignUpSheet extends ConsumerWidget {
                         await const Authenticator().loginWithGoogle();
                     result.log();
                   },
-                  child: MyNeuContainer(
-                    offset: const Offset(0, 0),
+                  child: const MyNeuContainer(
+                    offset: Offset(0, 0),
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(width: 50),
@@ -315,11 +313,10 @@ class SignUpSheet extends ConsumerWidget {
                       await const Authenticator().loginWithFacebook();
                   result.log();
                 },
-                child: MyNeuContainer(
-                  offset: const Offset(0, 0),
+                child: const MyNeuContainer(
+                  offset: Offset(0, 0),
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(width: 50),

@@ -32,7 +32,7 @@ class MyNeuContainer extends StatelessWidget {
     this.shadowBlurRadius = NeuConstants.neuShadowBlurRadius,
     this.shadowBlurStyle = NeuConstants.neuBlurStyle,
     this.child,
-    this.borderRadius,
+    this.borderRadius = NeuConstants.neuBorderRadius,
   }) : super(key: key);
 
   /// - offset (optional): An Offset that defines the position of the shadow of the container.
