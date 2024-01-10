@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:neubrutalism_ui/neubrutalism_ui.dart';
 import 'package:sylas_ai/auth/notifiers/auth_state_provider.dart';
+import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
 import 'package:sylas_ai/screens/models/login_form_state/providers/log_in_form_state_provider.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
 
@@ -61,7 +62,7 @@ class LandingPageScreen extends ConsumerWidget {
                   child: SizedBox(
                     width: double.infinity,
                     height: 60, // Adjust the height of the button
-                    child: NeuTextButton(
+                    child: MyNeuTextButton(
                       borderRadius: BorderRadius.circular(12),
                       buttonColor: const Color(0xFFF06543),
                       buttonHeight: 60,

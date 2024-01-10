@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:neubrutalism_ui/neubrutalism_ui.dart';
 
+import 'package:sylas_ai/neubrutalism/myNeuContainer.dart';
+import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
+import 'package:sylas_ai/neubrutalism/my_neu_search_bar.dart';
+
 import '../auth/backend/authenticator.dart';
 // import '../auth/models/auth_result.dart';
 import '../auth/models/auth_result.dart';
@@ -87,29 +91,6 @@ class SignUpSheet extends ConsumerWidget {
     final formState = ref.watch(loginFormStateNotiferProvider);
     final formStateNotifier = ref.watch(loginFormStateNotiferProvider.notifier);
 
-    // TODO: Look for a better way to do this
-    OutlineInputBorder? myCustomBorder(fieldError) {
-      if (fieldError == 'email') {
-        return OutlineInputBorder(
-          borderSide: BorderSide(
-            color: formState.emailError ? Colors.red : Colors.black,
-            width: 2.0, // Adjust border width here
-          ),
-          borderRadius: BorderRadius.circular(20.0),
-        );
-      } else if (fieldError == 'password') {
-        return OutlineInputBorder(
-          borderSide: BorderSide(
-            color: formState.passwordError ? Colors.red : Colors.black,
-            width: 2.0, // Adjust border width here
-          ),
-          borderRadius: BorderRadius.circular(20.0),
-        );
-      } else {
-        return null;
-      }
-    }
-
     return Container(
       height: MediaQuery.of(context).size.height * 0.9,
       padding: const EdgeInsets.all(40),
@@ -132,7 +113,17 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 30),
             SizedBox(
               height: buttonHeight,
-              child: NeuSearchBar(
+              child: MyNeuSearchBar(
+                onChanged: (newEmail) {
+                  if (ref.watch(loginFormStateNotiferProvider).emailError) {
+                    ref
+                        .watch(loginFormStateNotiferProvider.notifier)
+                        .clearEmailError();
+                  }
+                  ref
+                      .watch(loginFormStateNotiferProvider.notifier)
+                      .setEmail(newEmail);
+                },
                 borderRadius: BorderRadius.circular(12),
                 borderColor: ref.watch(loginFormStateNotiferProvider).emailError
                     ? Colors.red
@@ -149,17 +140,35 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 20),
             SizedBox(
               height: buttonHeight,
-              child: NeuSearchBar(
+              child: MyNeuSearchBar(
                 borderRadius: BorderRadius.circular(12),
                 leadingIcon: const Icon(Icons.lock),
                 searchBarColor: Colors.white,
                 hintText: 'Password',
+                borderColor:
+                    ref.watch(loginFormStateNotiferProvider).passwordError
+                        ? Colors.red
+                        : Colors.black,
+                shadowColor:
+                    ref.watch(loginFormStateNotiferProvider).passwordError
+                        ? Colors.red
+                        : Colors.black,
+                onChanged: (newPassword) {
+                  if (ref.watch(loginFormStateNotiferProvider).passwordError) {
+                    ref
+                        .watch(loginFormStateNotiferProvider.notifier)
+                        .clearPasswordError();
+                  }
+                  ref
+                      .watch(loginFormStateNotiferProvider.notifier)
+                      .setPassword(newPassword);
+                },
               ),
             ),
             const SizedBox(height: 30),
             SizedBox(
                 height: buttonHeight,
-                child: NeuTextButton(
+                child: MyNeuTextButton(
                     enableAnimation: true,
                     text: const Text('Create Account',
                         style: TextStyle(
@@ -245,7 +254,7 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 40),
             SizedBox(
               height: buttonHeight,
-              child: NeuContainer(
+              child: MyNeuContainer(
                 offset: const Offset(0, 0),
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
@@ -277,7 +286,7 @@ class SignUpSheet extends ConsumerWidget {
                         await const Authenticator().loginWithGoogle();
                     result.log();
                   },
-                  child: NeuContainer(
+                  child: MyNeuContainer(
                     offset: const Offset(0, 0),
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
@@ -306,7 +315,7 @@ class SignUpSheet extends ConsumerWidget {
                       await const Authenticator().loginWithFacebook();
                   result.log();
                 },
-                child: NeuContainer(
+                child: MyNeuContainer(
                   offset: const Offset(0, 0),
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
