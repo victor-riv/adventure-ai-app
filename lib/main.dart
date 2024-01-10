@@ -19,25 +19,9 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
         title: 'AI Travel Companion',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // TRY THIS: Try running your application with "flutter run". You'll see
-          // the application has a purple toolbar. Then, without quitting the app,
-          // try changing the seedColor in the colorScheme below to Colors.green
-          // and then invoke "hot reload" (save your changes or press the "hot
-          // reload" button in a Flutter-supported IDE, or press "r" if you used
-          // the command line to start the app).
-          //
-          // Notice that the counter didn't reset back to zero; the application
-          // state is not lost during the reload. To reset the state, use hot
-          // restart instead.
-          //
-          // This works for code too, not just values: Most code changes can be
-          // tested with just a hot reload.
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF751E88)),
-          useMaterial3: true,
-        ),
+        theme: ThemeData.from(
+            colorScheme: const ColorScheme.light()
+                .copyWith(background: const Color(0xFFFFFFFF))),
         home: const AdventureAiApp());
   }
 }
@@ -48,21 +32,22 @@ class AdventureAiApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        body: Stack(
-      fit: StackFit.expand,
-      children: [
-        /** 
-         * TODO: Find where SVG code should live bc not every page will need this as the background
-         * 
-         */
-        SvgPicture.asset(
-          'assets/svg/background.svg',
-          fit: BoxFit.cover,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-        ),
-        const LandingPageScreen(),
-      ],
-    ));
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const LandingPageScreen(), // Displayed at the bottom
+          Positioned(
+            bottom: MediaQuery.of(context).size.height *
+                0.42, // Adjust this value to position the SVG
+            left: 0,
+            right: 0,
+            child: SvgPicture.asset(
+              'assets/svg/neuBG.svg',
+              fit: BoxFit.contain,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

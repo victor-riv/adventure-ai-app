@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neubrutalism_ui/neubrutalism_ui.dart';
 import 'package:sylas_ai/auth/notifiers/auth_state_provider.dart';
 import 'package:sylas_ai/screens/models/login_form_state/providers/log_in_form_state_provider.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
@@ -10,7 +11,7 @@ class LandingPageScreen extends ConsumerWidget {
   void _navigateToSignUpScreen(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
         context: context,
-        backgroundColor: Theme.of(context).cardColor,
+        backgroundColor: const Color(0xFFFFFFFF),
         isScrollControlled: true,
         builder: (BuildContext context) {
           return SignUpSheet();
@@ -42,7 +43,7 @@ class LandingPageScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
                 const Text(
@@ -51,28 +52,28 @@ class LandingPageScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: SizedBox(
                     width: double.infinity,
                     height: 60, // Adjust the height of the button
-                    child: ElevatedButton(
+                    child: NeuTextButton(
+                      borderRadius: BorderRadius.circular(12),
+                      buttonColor: const Color(0xFFF06543),
+                      buttonHeight: 60,
+                      enableAnimation: true,
+                      text: const Text(
+                        "Let's Get Started",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w700),
+                      ),
                       onPressed: () {
                         _navigateToSignUpScreen(context, ref);
                       },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      child: const Text(
-                        "Let's Get Started",
-                        style: TextStyle(fontSize: 18),
-                      ),
                     ),
                   ),
                 ),
@@ -92,7 +93,7 @@ class LandingPageScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -108,20 +109,13 @@ class LandingPageScreen extends ConsumerWidget {
                   child: SizedBox(
                     width: double.infinity,
                     height: 60, // Adjust the height of the button
-                    child: OutlinedButton(
-                      onPressed: () {
-                        // Add logic to continue as a guest
-                      },
-                      style: OutlinedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        side: const BorderSide(
-                            color: Colors.white), // White border
-                      ),
-                      child: const Text(
-                        'I already have an account',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                    child: NeuTextButton(
+                      borderRadius: BorderRadius.circular(12),
+                      buttonColor: Colors.white,
+                      buttonHeight: 60,
+                      enableAnimation: true,
+                      text: const Text(
+                        "Already have an account",
                       ),
                     ),
                   ),

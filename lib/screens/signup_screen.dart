@@ -1,10 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:neubrutalism_ui/neubrutalism_ui.dart';
 
 import '../auth/backend/authenticator.dart';
+// import '../auth/models/auth_result.dart';
 import '../auth/models/auth_result.dart';
 import '../auth/notifiers/auth_state_provider.dart';
 import 'models/login_form_state/providers/log_in_form_state_provider.dart';
+
+// ElevatedButton(
+//                 onPressed: authstate.isLoading
+//                     ? null
+//                     : () async {
+//                         FocusScope.of(context).unfocus();
+
+//                         // TODO: Before we begin anything, validate that the fields are not empty
+
+//                         formStateNotifier.validateEmail();
+//                         formStateNotifier.validatePassword();
+
+//                         if (ref
+//                                 .watch(loginFormStateNotiferProvider)
+//                                 .emailError ||
+//                             ref
+//                                 .watch(loginFormStateNotiferProvider)
+//                                 .passwordError) {
+//                           return;
+//                         }
+
+//                         ref
+//                             .watch(authStateProvider.notifier)
+//                             .updateIsLoading(true);
+
+//                         final response = await const Authenticator()
+//                             .loginWithEmailandPassword(
+//                                 formState.email, formState.password);
+
+//                         if (response.result == AuthResult.failure) {
+//                           formStateNotifier.validate(
+//                               true, response.errorMessage!);
+//                           ref
+//                               .watch(authStateProvider.notifier)
+//                               .updateIsLoading(false);
+//                           return;
+//                         }
+
+//                         // Clear text fields after account creation
+//                         emailController.clear();
+//                         passwordController.clear();
+
+//                         // Reset the state
+//                         formStateNotifier.resetState();
+
+//                         ref
+//                             .watch(authStateProvider.notifier)
+//                             .updateIsLoading(false);
+
+//                         if (context.mounted) {
+//                           Navigator.of(context).pop();
+//                         }
+//                       },
+//                 style: ElevatedButton.styleFrom(
+//                   shape: RoundedRectangleBorder(
+//                     borderRadius: BorderRadius.circular(20.0),
+//                   ),
+//                   backgroundColor:
+//                       const Color(0xFF43137B), // Set transparent background
+//                 ),
+//                 child: authstate.isLoading
+//                     ? const CircularProgressIndicator()
+//                     : const Text(
+//                         "Create Account",
+//                         style: TextStyle(fontSize: 16, color: Colors.white),
+//                       ),
+//               ),
 
 class SignUpSheet extends ConsumerWidget {
   SignUpSheet({super.key});
@@ -62,133 +131,92 @@ class SignUpSheet extends ConsumerWidget {
             )),
             const SizedBox(height: 30),
             SizedBox(
-              height: formState.emailError ? 70 : buttonHeight,
-              child: TextFormField(
-                controller: emailController,
-                onChanged: (value) {
-                  if (formState.emailError) {
-                    formStateNotifier.clearEmailError();
-                  }
-                  formStateNotifier.setEmail(value.trim());
-                },
+              height: buttonHeight,
+              child: NeuSearchBar(
+                borderRadius: BorderRadius.circular(12),
+                borderColor: ref.watch(loginFormStateNotiferProvider).emailError
+                    ? Colors.red
+                    : Colors.black,
+                shadowColor: ref.watch(loginFormStateNotiferProvider).emailError
+                    ? Colors.red
+                    : Colors.black,
+                leadingIcon: const Icon(Icons.email),
+                searchBarColor: Colors.white,
+                hintText: 'Email',
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  errorText:
-                      formState.emailError ? formState.emailErrorText : null,
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  errorBorder: myCustomBorder('email'),
-                  focusedBorder: myCustomBorder('email'),
-                  enabledBorder: myCustomBorder('email'),
-                ),
-                // Handle username input
               ),
             ),
             const SizedBox(height: 20),
             SizedBox(
-              height: formState.passwordError ? 70 : buttonHeight,
-              child: TextFormField(
-                controller: passwordController,
-                onChanged: (value) {
-                  if (formState.passwordError) {
-                    formStateNotifier.clearPasswordError();
-                  }
-                  formStateNotifier.setPassword(value.trim());
-                },
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  errorText: formState.passwordError
-                      ? formState.passwordErrorText
-                      : null,
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  errorBorder: myCustomBorder('password'),
-                  focusedBorder: myCustomBorder('password'),
-                  enabledBorder: myCustomBorder('password'),
-                ),
-                // Handle username input
+              height: buttonHeight,
+              child: NeuSearchBar(
+                borderRadius: BorderRadius.circular(12),
+                leadingIcon: const Icon(Icons.lock),
+                searchBarColor: Colors.white,
+                hintText: 'Password',
               ),
             ),
             const SizedBox(height: 30),
             SizedBox(
-              height: buttonHeight,
-              child: ElevatedButton(
-                onPressed: authstate.isLoading
-                    ? null
-                    : () async {
-                        FocusScope.of(context).unfocus();
+                height: buttonHeight,
+                child: NeuTextButton(
+                    enableAnimation: true,
+                    text: const Text('Create Account',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w700)),
+                    borderRadius: BorderRadius.circular(12),
+                    buttonColor: const Color(0xFFF06543),
+                    onPressed: ref.watch(authStateProvider).isLoading
+                        ? null
+                        : () async {
+                            FocusScope.of(context).unfocus();
 
-                        // TODO: Before we begin anything, validate that the fields are not empty
+                            // TODO: Before we begin anything, validate that the fields are not empty
 
-                        formStateNotifier.validateEmail();
-                        formStateNotifier.validatePassword();
+                            formStateNotifier.validateEmail();
+                            formStateNotifier.validatePassword();
 
-                        if (ref
-                                .watch(loginFormStateNotiferProvider)
-                                .emailError ||
+                            if (ref
+                                    .watch(loginFormStateNotiferProvider)
+                                    .emailError ||
+                                ref
+                                    .watch(loginFormStateNotiferProvider)
+                                    .passwordError) {
+                              return;
+                            }
+
                             ref
-                                .watch(loginFormStateNotiferProvider)
-                                .passwordError) {
-                          return;
-                        }
+                                .watch(authStateProvider.notifier)
+                                .updateIsLoading(true);
 
-                        ref
-                            .watch(authStateProvider.notifier)
-                            .updateIsLoading(true);
+                            final response = await const Authenticator()
+                                .loginWithEmailandPassword(
+                                    formState.email, formState.password);
 
-                        final response = await const Authenticator()
-                            .loginWithEmailandPassword(
-                                formState.email, formState.password);
+                            if (response.result == AuthResult.failure) {
+                              formStateNotifier.validate(
+                                  true, response.errorMessage!);
+                              ref
+                                  .watch(authStateProvider.notifier)
+                                  .updateIsLoading(false);
+                              return;
+                            }
 
-                        if (response.result == AuthResult.failure) {
-                          formStateNotifier.validate(
-                              true, response.errorMessage!);
-                          ref
-                              .watch(authStateProvider.notifier)
-                              .updateIsLoading(false);
-                          return;
-                        }
+                            // Clear text fields after account creation
+                            emailController.clear();
+                            passwordController.clear();
 
-                        // Clear text fields after account creation
-                        emailController.clear();
-                        passwordController.clear();
+                            // Reset the state
+                            formStateNotifier.resetState();
 
-                        // Reset the state
-                        formStateNotifier.resetState();
+                            ref
+                                .watch(authStateProvider.notifier)
+                                .updateIsLoading(false);
 
-                        ref
-                            .watch(authStateProvider.notifier)
-                            .updateIsLoading(false);
-
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  backgroundColor:
-                      const Color(0xFF43137B), // Set transparent background
-                ),
-                child: authstate.isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text(
-                        "Create Account",
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-              ),
-            ),
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
+                          })),
             const SizedBox(height: 40),
             SizedBox(
               width: double.infinity,
@@ -217,56 +245,24 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 40),
             SizedBox(
               height: buttonHeight,
-              child: ElevatedButton(
-                onPressed: () async {
-                  await const Authenticator().loginWithGoogle();
-                },
-                style: ElevatedButton.styleFrom(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  // Set the background color
-                ),
+              child: NeuContainer(
+                offset: const Offset(0, 0),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    SizedBox(width: 50),
                     Icon(
-                      Icons.mail,
+                      Icons.apple,
                       size: 24,
                       color: Colors.black,
-                    ), // Replace with Google icon
-                    SizedBox(width: 30), // Adjust spacing as needed
-                    Text(
-                      "Continue with Google",
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: buttonHeight,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                  // Set the background color
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(Icons.apple,
-                        size: 24,
-                        color: Colors.black), // Replace with Apple icon
-                    SizedBox(width: 30), // Adjust spacing as needed
+                    ), // Replace with Facebook icon
+                    SizedBox(width: 20), // Adjust spacing as needed
                     Text(
                       "Continue with Apple",
-                      style: TextStyle(fontSize: 14, color: Colors.black),
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w700),
                     ),
                   ],
                 ),
@@ -274,34 +270,63 @@ class SignUpSheet extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             SizedBox(
+                height: buttonHeight,
+                child: GestureDetector(
+                  onTap: () async {
+                    final result =
+                        await const Authenticator().loginWithGoogle();
+                    result.log();
+                  },
+                  child: NeuContainer(
+                    offset: const Offset(0, 0),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 50),
+                        Icon(Icons.email,
+                            color: Colors.black), // Replace with your icon
+                        SizedBox(width: 20), // Adjust spacing as needed
+                        Text(
+                          "Continue with Google",
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+            const SizedBox(height: 20),
+            SizedBox(
               height: buttonHeight,
-              child: ElevatedButton(
-                onPressed: () async {
+              child: GestureDetector(
+                onTap: () async {
                   final result =
                       await const Authenticator().loginWithFacebook();
                   result.log();
                 },
-                style: ElevatedButton.styleFrom(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                child: NeuContainer(
+                  offset: const Offset(0, 0),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(width: 50),
+                      Icon(
+                        Icons.facebook,
+                        size: 24,
+                        color: Colors.black,
+                      ), // Replace with Facebook icon
+                      SizedBox(width: 20), // Adjust spacing as needed
+                      Text(
+                        "Continue with Facebook",
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w700),
+                      ),
+                    ],
                   ),
-                  // Set the background color
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.facebook,
-                      size: 24,
-                      color: Colors.black,
-                    ), // Replace with Facebook icon
-                    SizedBox(width: 30), // Adjust spacing as needed
-                    Text(
-                      "Continue with Facebook",
-                      style: TextStyle(fontSize: 14, color: Colors.black),
-                    ),
-                  ],
                 ),
               ),
             ),
