@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neubrutalism_ui/neubrutalism_ui.dart';
+import 'package:sylas_ai/neubrutalism/my_neu_container.dart';
 import 'package:sylas_ai/neubrutalism/neu_constants.dart';
 
 class MyNeuButton extends StatefulWidget {
@@ -139,9 +139,11 @@ class MyNeuButtonState extends State<MyNeuButton>
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        var doOnPressedAction = () => {
-              if (widget.onPressed != null) {widget.onPressed!()}
-            };
+        void doOnPressedAction() {
+          if (widget.onPressed != null) {
+            widget.onPressed!();
+          }
+        }
 
         if (widget.enableAnimation) {
           // do the on pressed action after the
@@ -158,7 +160,7 @@ class MyNeuButtonState extends State<MyNeuButton>
       },
       child: AnimatedBuilder(
         animation: _animation,
-        child: NeuContainer(
+        child: MyNeuContainer(
           width: widget.buttonWidth,
           height: widget.buttonHeight,
           borderRadius: widget.borderRadius,

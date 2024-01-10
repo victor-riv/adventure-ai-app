@@ -1,4 +1,3 @@
-//Color
 import 'package:flutter/material.dart';
 
 @immutable

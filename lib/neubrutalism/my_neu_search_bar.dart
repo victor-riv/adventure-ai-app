@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sylas_ai/neubrutalism/myNeuContainer.dart';
+import 'package:sylas_ai/neubrutalism/my_neu_container.dart';
 import 'package:sylas_ai/neubrutalism/neu_constants.dart';
 
 class MyNeuSearchBar extends StatelessWidget {

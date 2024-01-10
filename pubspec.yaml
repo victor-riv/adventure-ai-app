@@ -49,6 +49,7 @@ dependencies:
   url_launcher: ^6.2.2
   flutter_svg: ^2.0.9
   neubrutalism_ui: ^2.0.2
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:

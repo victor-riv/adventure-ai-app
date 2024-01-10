@@ -1,83 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:neubrutalism_ui/neubrutalism_ui.dart';
-
-import 'package:sylas_ai/neubrutalism/myNeuContainer.dart';
-import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
-import 'package:sylas_ai/neubrutalism/my_neu_search_bar.dart';
 
 import '../auth/backend/authenticator.dart';
-// import '../auth/models/auth_result.dart';
 import '../auth/models/auth_result.dart';
-import '../auth/notifiers/auth_state_provider.dart';
 import 'models/login_form_state/providers/log_in_form_state_provider.dart';
-
-// ElevatedButton(
-//                 onPressed: authstate.isLoading
-//                     ? null
-//                     : () async {
-//                         FocusScope.of(context).unfocus();
-
-//                         // TODO: Before we begin anything, validate that the fields are not empty
-
-//                         formStateNotifier.validateEmail();
-//                         formStateNotifier.validatePassword();
-
-//                         if (ref
-//                                 .watch(loginFormStateNotiferProvider)
-//                                 .emailError ||
-//                             ref
-//                                 .watch(loginFormStateNotiferProvider)
-//                                 .passwordError) {
-//                           return;
-//                         }
-
-//                         ref
-//                             .watch(authStateProvider.notifier)
-//                             .updateIsLoading(true);
-
-//                         final response = await const Authenticator()
-//                             .loginWithEmailandPassword(
-//                                 formState.email, formState.password);
-
-//                         if (response.result == AuthResult.failure) {
-//                           formStateNotifier.validate(
-//                               true, response.errorMessage!);
-//                           ref
-//                               .watch(authStateProvider.notifier)
-//                               .updateIsLoading(false);
-//                           return;
-//                         }
-
-//                         // Clear text fields after account creation
-//                         emailController.clear();
-//                         passwordController.clear();
-
-//                         // Reset the state
-//                         formStateNotifier.resetState();
-
-//                         ref
-//                             .watch(authStateProvider.notifier)
-//                             .updateIsLoading(false);
-
-//                         if (context.mounted) {
-//                           Navigator.of(context).pop();
-//                         }
-//                       },
-//                 style: ElevatedButton.styleFrom(
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(20.0),
-//                   ),
-//                   backgroundColor:
-//                       const Color(0xFF43137B), // Set transparent background
-//                 ),
-//                 child: authstate.isLoading
-//                     ? const CircularProgressIndicator()
-//                     : const Text(
-//                         "Create Account",
-//                         style: TextStyle(fontSize: 16, color: Colors.white),
-//                       ),
-//               ),
+import '../auth/notifiers/auth_state_provider.dart';
+import '../neubrutalism/my_neu_container.dart';
+import '../neubrutalism/my_neu_button.dart';
+import '../neubrutalism/my_neu_search_bar.dart';
 
 class SignUpSheet extends ConsumerWidget {
   SignUpSheet({super.key});
@@ -87,7 +17,6 @@ class SignUpSheet extends ConsumerWidget {
   final buttonHeight = 50.0; // Set the height for buttons
 
   Widget _buildSignUpScreen(BuildContext context, WidgetRef ref) {
-    final authstate = ref.watch(authStateProvider);
     final formState = ref.watch(loginFormStateNotiferProvider);
     final formStateNotifier = ref.watch(loginFormStateNotiferProvider.notifier);
 
