@@ -46,14 +46,14 @@ class LandingPageScreen extends ConsumerWidget {
                     color: Colors.black,
                   ),
                 ),
+                const SizedBox(height: 5),
                 const Text(
                   'Welcome to Adventure Ai',
                   textAlign: TextAlign.left,
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
                 const SizedBox(height: 30),
                 SizedBox(
@@ -62,7 +62,6 @@ class LandingPageScreen extends ConsumerWidget {
                     width: double.infinity,
                     height: 60, // Adjust the height of the button
                     child: MyNeuTextButton(
-                      borderRadius: BorderRadius.circular(12),
                       buttonColor: const Color(0xFFF06543),
                       buttonHeight: 60,
                       enableAnimation: true,
@@ -106,15 +105,14 @@ class LandingPageScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: double.infinity,
                     height: 60, // Adjust the height of the button
                     child: MyNeuTextButton(
-                      borderRadius: BorderRadius.circular(12),
                       buttonColor: Colors.white,
                       buttonHeight: 60,
                       enableAnimation: true,
-                      text: const Text(
+                      text: Text(
                         "Already have an account",
                       ),
                     ),

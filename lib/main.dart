@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 import 'screens/landing_page_screen.dart';
 
@@ -20,6 +21,8 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
         title: 'AI Travel Companion',
         theme: ThemeData.from(
+            textTheme:
+                GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
             colorScheme: const ColorScheme.light()
                 .copyWith(background: const Color(0xFFFFFFFF))),
         home: const AdventureAiApp());

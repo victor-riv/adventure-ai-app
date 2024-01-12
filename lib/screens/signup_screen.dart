@@ -53,7 +53,6 @@ class SignUpSheet extends ConsumerWidget {
                       .watch(loginFormStateNotiferProvider.notifier)
                       .setEmail(newEmail);
                 },
-                borderRadius: BorderRadius.circular(12),
                 borderColor: ref.watch(loginFormStateNotiferProvider).emailError
                     ? Colors.red
                     : Colors.black,
@@ -70,7 +69,6 @@ class SignUpSheet extends ConsumerWidget {
             SizedBox(
               height: buttonHeight,
               child: MyNeuSearchBar(
-                borderRadius: BorderRadius.circular(12),
                 leadingIcon: const Icon(Icons.lock),
                 searchBarColor: Colors.white,
                 hintText: 'Password',
@@ -102,7 +100,6 @@ class SignUpSheet extends ConsumerWidget {
                     text: const Text('Create Account',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700)),
-                    borderRadius: BorderRadius.circular(12),
                     buttonColor: const Color(0xFFF06543),
                     onPressed: ref.watch(authStateProvider).isLoading
                         ? null
