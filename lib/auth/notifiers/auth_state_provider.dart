@@ -9,12 +9,12 @@ class AuthStateNotifier extends Notifier<AuthState> {
   AuthState build() {
     state = const AuthState.unknown();
 
-    // if (_authenticator.isAlreadyLoggedIn) {
-    //   state = AuthState(
-    //       result: AuthResult.success,
-    //       isLoading: false,
-    //       userId: _authenticator.userId);
-    // }
+    if (_authenticator.isAlreadyLoggedIn) {
+      state = AuthState(
+          result: AuthResult.success,
+          isLoading: false,
+          userId: _authenticator.userId);
+    }
     return state;
   }
 
@@ -37,7 +37,15 @@ class AuthStateNotifier extends Notifier<AuthState> {
     final result = await _authenticator.loginWithGoogle();
     final userId = _authenticator.userId;
 
-    if (result == AuthResult.success && userId != null) {}
+    state = AuthState(result: result, isLoading: false, userId: userId);
+  }
+
+  Future<void> loginWithFacebook() async {
+    state = state.copiedWithIsLoading(true);
+    final result = await _authenticator.loginWithFacebook();
+    final userId = _authenticator.userId;
+
+    state = AuthState(result: result, isLoading: false, userId: userId);
   }
 }
 

@@ -207,9 +207,18 @@ class SignUpSheet extends ConsumerWidget {
                 height: buttonHeight,
                 child: GestureDetector(
                   onTap: () async {
-                    final result =
-                        await const Authenticator().loginWithGoogle();
-                    result.log();
+                    // TODO: Should probably close the bottomSheet before the log in?
+
+                    await ref
+                        .read(authStateProvider.notifier)
+                        .loginWithGoogle();
+
+                    if (ref.watch(authStateProvider).result ==
+                        AuthResult.success) {
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    }
                   },
                   child: const MyNeuContainer(
                     offset: Offset(0, 0),
@@ -235,9 +244,15 @@ class SignUpSheet extends ConsumerWidget {
               height: buttonHeight,
               child: GestureDetector(
                 onTap: () async {
-                  final result =
-                      await const Authenticator().loginWithFacebook();
-                  result.log();
+                  await ref
+                      .read(authStateProvider.notifier)
+                      .loginWithFacebook();
+                  if (ref.watch(authStateProvider).result ==
+                      AuthResult.success) {
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  }
                 },
                 child: const MyNeuContainer(
                   offset: Offset(0, 0),
