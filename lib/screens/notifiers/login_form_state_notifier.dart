@@ -48,7 +48,6 @@ class LoginFormStateNotifier extends Notifier<LoginFormState> {
       state = state.copyWith(
           emailError: true,
           emailErrorText: 'The email provided is not a valid email');
-      return;
     }
   }
 

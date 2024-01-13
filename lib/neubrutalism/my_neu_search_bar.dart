@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sylas_ai/neubrutalism/my_neu_container.dart';
 import 'package:sylas_ai/neubrutalism/neu_constants.dart';
 
-class MyNeuSearchBar extends StatelessWidget {
+class NeuTextField extends StatelessWidget {
   /// A customizable neubrutalist-style Search Bar.
   ///
   /// The Search-Bar has customizable keyboardType,inputStyle,hintText,
@@ -23,12 +23,12 @@ class MyNeuSearchBar extends StatelessWidget {
   ///
   ///   - const neuOffset = Offset(4, 4);
   ///   - const neuBlurStyle = BlurStyle.solid;
-  const MyNeuSearchBar(
+  const NeuTextField(
       {Key? key,
       this.keyboardType,
       this.inputStyle,
       this.hintText,
-      this.searchController,
+      this.controller,
       this.hintStyle,
       this.searchBarHeight,
       this.searchBarWidth,
@@ -61,11 +61,11 @@ class MyNeuSearchBar extends StatelessWidget {
 
   final String? hintText;
 
-  /// - searchController (optional): A TextEditingController that controls the text being entered in the search bar.
+  /// - controller (optional): A TextEditingController that controls the text being entered in the search bar.
   ///
   /// By default, it is set to null.
 
-  final TextEditingController? searchController;
+  final TextEditingController? controller;
 
   /// - hintStyle (optional): A TextStyle that defines the style of the hint text displayed in the search bar.
   ///
@@ -156,7 +156,7 @@ class MyNeuSearchBar extends StatelessWidget {
           const SizedBox(width: 13),
           Expanded(
             child: TextField(
-              controller: searchController,
+              controller: controller,
               decoration: InputDecoration(
                 hintText: hintText,
                 hintStyle: hintStyle,

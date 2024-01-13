@@ -115,7 +115,7 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 40),
             SizedBox(
               height: buttonHeight,
-              child: MyNeuSearchBar(
+              child: NeuTextField(
                 onChanged: (newEmail) {
                   if (ref.watch(loginFormStateNotiferProvider).emailError) {
                     ref
@@ -138,10 +138,23 @@ class SignUpSheet extends ConsumerWidget {
                 keyboardType: TextInputType.emailAddress,
               ),
             ),
-            const SizedBox(height: 20),
+            if (ref.watch(loginFormStateNotiferProvider).emailError) ...[
+              const SizedBox(height: 10),
+              Text(
+                ref.watch(loginFormStateNotiferProvider).emailErrorText,
+                style: const TextStyle(color: Colors.red),
+              ),
+              const SizedBox(
+                height: 10,
+              )
+            ] else ...[
+              const SizedBox(
+                height: 20,
+              )
+            ],
             SizedBox(
               height: buttonHeight,
-              child: MyNeuSearchBar(
+              child: NeuTextField(
                 leadingIcon: const Icon(Icons.lock),
                 searchBarColor: Colors.white,
                 hintText: 'Password',
@@ -166,7 +179,21 @@ class SignUpSheet extends ConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(height: 30),
+            if (ref.watch(loginFormStateNotiferProvider).passwordError) ...[
+              const SizedBox(height: 10),
+              Text(
+                ref.watch(loginFormStateNotiferProvider).passwordErrorText,
+                style: const TextStyle(color: Colors.red),
+              ),
+              const SizedBox(
+                height: 10,
+              )
+            ] else ...[
+              const SizedBox(
+                height: 30,
+              )
+            ],
+
             SizedBox(
                 height: buttonHeight,
                 child: MyNeuTextButton(
@@ -178,8 +205,6 @@ class SignUpSheet extends ConsumerWidget {
                         ? null
                         : () async {
                             FocusScope.of(context).unfocus();
-
-                            // TODO: Before we begin anything, validate that the fields are not empty
 
                             formStateNotifier.validateEmail();
                             formStateNotifier.validatePassword();
@@ -204,7 +229,6 @@ class SignUpSheet extends ConsumerWidget {
 
                             if (ref.watch(authStateProvider).result ==
                                 AuthResult.failure) {
-                              // TODO: Refactor to get error msg
                               formStateNotifier.validate(
                                   true, "Error has ocurred");
                               return;
