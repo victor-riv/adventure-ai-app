@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../auth/backend/authenticator.dart';
 import '../auth/models/auth_result.dart';
 import 'models/login_form_state/providers/log_in_form_state_provider.dart';
-import '../auth/notifiers/auth_state_provider.dart';
+import '../auth/backend/providers/auth_state_provider.dart';
 import '../neubrutalism/my_neu_container.dart';
 import '../neubrutalism/my_neu_button.dart';
 import '../neubrutalism/my_neu_search_bar.dart';

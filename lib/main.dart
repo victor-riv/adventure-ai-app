@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sylas_ai/auth/models/auth_result.dart';
-import 'package:sylas_ai/auth/notifiers/auth_state_provider.dart';
+import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
 import 'firebase_options.dart';
 import 'screens/landing_page_screen.dart';

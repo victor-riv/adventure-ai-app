@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sylas_ai/auth/notifiers/auth_state_provider.dart';
+import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
 import 'package:sylas_ai/screens/models/login_form_state/providers/log_in_form_state_provider.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
