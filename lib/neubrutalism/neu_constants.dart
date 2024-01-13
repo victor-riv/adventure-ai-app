@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class NeuConstants {
   static const neuBlack = Colors.black;
 
-  static const neuDefault1 = Colors.teal;
+  static const neuDefault1 = Color(0xFFF06543);
   static const neuShadow = Color(0xFF080808);
   static const neuBorder = 3.0;
   static const neuShadowBlurRadius = 0.0;

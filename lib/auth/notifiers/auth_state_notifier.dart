@@ -30,6 +30,19 @@ class AuthStateNotifier extends Notifier<AuthState> {
         userId: state.userId);
   }
 
+  Future<void> loginWithEmailandPassword(String email, String password) async {
+    state.copiedWithIsLoading(true);
+    final result =
+        await _authenticator.loginWithEmailandPassword(email, password);
+
+    if (result.result == AuthResult.success) {
+      state = AuthState(
+          result: result.result,
+          isLoading: false,
+          userId: _authenticator.userId);
+    }
+  }
+
   Future<void> logOut() async {
     state = state.copiedWithIsLoading(true);
     await _authenticator.logOut();

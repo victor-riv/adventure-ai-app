@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../auth/backend/authenticator.dart';
 import '../auth/models/auth_result.dart';
 import 'models/login_form_state/providers/log_in_form_state_provider.dart';
 import '../auth/backend/providers/auth_state_provider.dart';
-import '../neubrutalism/my_neu_container.dart';
 import '../neubrutalism/my_neu_button.dart';
 import '../neubrutalism/my_neu_search_bar.dart';
 
@@ -16,7 +14,8 @@ class SignUpSheet extends ConsumerWidget {
   final passwordController = TextEditingController();
   final buttonHeight = 50.0; // Set the height for buttons
 
-  Widget _buildSignUpScreen(BuildContext context, WidgetRef ref) {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final formState = ref.watch(loginFormStateNotiferProvider);
     final formStateNotifier = ref.watch(loginFormStateNotiferProvider.notifier);
 
@@ -36,10 +35,87 @@ class SignUpSheet extends ConsumerWidget {
             const SizedBox(height: 10),
             const Center(
                 child: Text(
-              "Let's create an account",
+              "Login",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             )),
             const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceEvenly, // This will space out the children evenly across the row's main axis.
+              children: [
+                MyNeuIconButton(
+                  enableAnimation: true,
+                  icon: const Icon(Icons.apple),
+                  buttonHeight: 50,
+                  buttonWidth: 50, // Replace with your actual icon
+                  // Add other necessary parameters
+                  onPressed: () {
+                    // Your button 1 action
+                  },
+                ),
+                MyNeuIconButton(
+                    enableAnimation: true,
+                    icon: const Icon(Icons.email),
+                    buttonHeight: 50,
+                    buttonWidth: 50, // Replace with your actual icon
+                    // Add other necessary parameters
+                    onPressed: () async {
+                      await ref
+                          .read(authStateProvider.notifier)
+                          .loginWithGoogle();
+                      if (ref.watch(authStateProvider).result ==
+                          AuthResult.success) {
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      }
+                    }),
+                MyNeuIconButton(
+                    enableAnimation: true,
+                    icon: const Icon(
+                        Icons.facebook), // Replace with your actual icon
+                    buttonHeight: 50,
+                    buttonWidth: 50,
+                    // Add other necessary parameters
+                    onPressed: () async {
+                      await ref
+                          .read(authStateProvider.notifier)
+                          .loginWithFacebook();
+                      if (ref.watch(authStateProvider).result ==
+                          AuthResult.success) {
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      }
+                    }),
+              ],
+            ),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Divider(color: Theme.of(context).dividerColor),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      'Or create account with your email',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Divider(color: Theme.of(context).dividerColor),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 40),
             SizedBox(
               height: buttonHeight,
               child: MyNeuSearchBar(
@@ -80,6 +156,7 @@ class SignUpSheet extends ConsumerWidget {
                     ref.watch(loginFormStateNotiferProvider).passwordError
                         ? Colors.red
                         : Colors.black,
+                obscureText: true,
                 onChanged: (newPassword) {
                   if (ref.watch(loginFormStateNotiferProvider).passwordError) {
                     ref
@@ -124,16 +201,16 @@ class SignUpSheet extends ConsumerWidget {
                                 .watch(authStateProvider.notifier)
                                 .updateIsLoading(true);
 
-                            final response = await const Authenticator()
+                            await ref
+                                .watch(authStateProvider.notifier)
                                 .loginWithEmailandPassword(
                                     formState.email, formState.password);
 
-                            if (response.result == AuthResult.failure) {
+                            if (ref.watch(authStateProvider).result ==
+                                AuthResult.failure) {
+                              // TODO: Refactor to get error msg
                               formStateNotifier.validate(
-                                  true, response.errorMessage!);
-                              ref
-                                  .watch(authStateProvider.notifier)
-                                  .updateIsLoading(false);
+                                  true, "Error has ocurred");
                               return;
                             }
 
@@ -144,6 +221,8 @@ class SignUpSheet extends ConsumerWidget {
                             // Reset the state
                             formStateNotifier.resetState();
 
+                            // TODO: Write to store
+
                             ref
                                 .watch(authStateProvider.notifier)
                                 .updateIsLoading(false);
@@ -152,139 +231,134 @@ class SignUpSheet extends ConsumerWidget {
                               Navigator.of(context).pop();
                             }
                           })),
-            const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Divider(color: Theme.of(context).dividerColor),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      'Already have an account?',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(color: Theme.of(context).dividerColor),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
-            SizedBox(
-              height: buttonHeight,
-              child: const MyNeuContainer(
-                offset: Offset(0, 0),
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(width: 50),
-                    Icon(
-                      Icons.apple,
-                      size: 24,
-                      color: Colors.black,
-                    ), // Replace with Facebook icon
-                    SizedBox(width: 20), // Adjust spacing as needed
-                    Text(
-                      "Continue with Apple",
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-                height: buttonHeight,
-                child: GestureDetector(
-                  onTap: () async {
-                    // TODO: Should probably close the bottomSheet before the log in?
+            // const SizedBox(height: 40),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Expanded(
+            //         child: Divider(color: Theme.of(context).dividerColor),
+            //       ),
+            //       const Padding(
+            //         padding: EdgeInsets.symmetric(horizontal: 8.0),
+            //         child: Text(
+            //           'Already have an account?',
+            //           style: TextStyle(
+            //             fontSize: 14,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         child: Divider(color: Theme.of(context).dividerColor),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(height: 40),
+            // SizedBox(
+            //   height: buttonHeight,
+            //   child: const MyNeuContainer(
+            //     offset: Offset(0, 0),
+            //     color: Colors.white,
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         SizedBox(width: 50),
+            //         Icon(
+            //           Icons.apple,
+            //           size: 24,
+            //           color: Colors.black,
+            //         ), // Replace with Facebook icon
+            //         SizedBox(width: 20), // Adjust spacing as needed
+            //         Text(
+            //           "Continue with Apple",
+            //           style: TextStyle(
+            //               color: Colors.black, fontWeight: FontWeight.w700),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(height: 20),
+            // SizedBox(
+            //     height: buttonHeight,
+            //     child: GestureDetector(
+            //       onTap: () async {
+            //         // TODO: Should probably close the bottomSheet before the log in?
 
-                    await ref
-                        .read(authStateProvider.notifier)
-                        .loginWithGoogle();
+            //         await ref
+            //             .read(authStateProvider.notifier)
+            //             .loginWithGoogle();
 
-                    if (ref.watch(authStateProvider).result ==
-                        AuthResult.success) {
-                      if (context.mounted) {
-                        Navigator.of(context).pop();
-                      }
-                    }
-                  },
-                  child: const MyNeuContainer(
-                    offset: Offset(0, 0),
-                    color: Colors.white,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(width: 50),
-                        Icon(Icons.email,
-                            color: Colors.black), // Replace with your icon
-                        SizedBox(width: 20), // Adjust spacing as needed
-                        Text(
-                          "Continue with Google",
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w700),
-                        ),
-                      ],
-                    ),
-                  ),
-                )),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: buttonHeight,
-              child: GestureDetector(
-                onTap: () async {
-                  await ref
-                      .read(authStateProvider.notifier)
-                      .loginWithFacebook();
-                  if (ref.watch(authStateProvider).result ==
-                      AuthResult.success) {
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                    }
-                  }
-                },
-                child: const MyNeuContainer(
-                  offset: Offset(0, 0),
-                  color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 50),
-                      Icon(
-                        Icons.facebook,
-                        size: 24,
-                        color: Colors.black,
-                      ), // Replace with Facebook icon
-                      SizedBox(width: 20), // Adjust spacing as needed
-                      Text(
-                        "Continue with Facebook",
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            //         if (ref.watch(authStateProvider).result ==
+            //             AuthResult.success) {
+            //           if (context.mounted) {
+            //             Navigator.of(context).pop();
+            //           }
+            //         }
+            //       },
+            //       child: const MyNeuContainer(
+            //         offset: Offset(0, 0),
+            //         color: Colors.white,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           children: [
+            //             SizedBox(width: 50),
+            //             Icon(Icons.email,
+            //                 color: Colors.black), // Replace with your icon
+            //             SizedBox(width: 20), // Adjust spacing as needed
+            //             Text(
+            //               "Continue with Google",
+            //               style: TextStyle(
+            //                   color: Colors.black, fontWeight: FontWeight.w700),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     )),
+            // const SizedBox(height: 20),
+            // SizedBox(
+            //   height: buttonHeight,
+            //   child: GestureDetector(
+            //     onTap: () async {
+            //       await ref
+            //           .read(authStateProvider.notifier)
+            //           .loginWithFacebook();
+            //       if (ref.watch(authStateProvider).result ==
+            //           AuthResult.success) {
+            //         if (context.mounted) {
+            //           Navigator.of(context).pop();
+            //         }
+            //       }
+            //     },
+            //     child: const MyNeuContainer(
+            //       offset: Offset(0, 0),
+            //       color: Colors.white,
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.start,
+            //         children: [
+            //           SizedBox(width: 50),
+            //           Icon(
+            //             Icons.facebook,
+            //             size: 24,
+            //             color: Colors.black,
+            //           ), // Replace with Facebook icon
+            //           SizedBox(width: 20), // Adjust spacing as needed
+            //           Text(
+            //             "Continue with Facebook",
+            //             style: TextStyle(
+            //                 color: Colors.black, fontWeight: FontWeight.w700),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return _buildSignUpScreen(context, ref);
   }
 }

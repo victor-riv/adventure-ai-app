@@ -40,6 +40,7 @@ class MyNeuSearchBar extends StatelessWidget {
       this.borderColor = NeuConstants.neuBlack,
       this.searchBarColor,
       this.shadowColor = NeuConstants.neuShadow,
+      this.obscureText = false,
       this.onChanged})
       : super(key: key);
 
@@ -132,6 +133,8 @@ class MyNeuSearchBar extends StatelessWidget {
 
   final Color shadowColor;
 
+  final bool obscureText;
+
   final void Function(String)? onChanged;
 
   @override
@@ -162,6 +165,7 @@ class MyNeuSearchBar extends StatelessWidget {
               ),
               style: inputStyle,
               keyboardType: keyboardType,
+              obscureText: obscureText,
               onChanged: onChanged,
             ),
           ),
