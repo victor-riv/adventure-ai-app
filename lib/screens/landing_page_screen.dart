@@ -64,7 +64,6 @@ class LandingPageScreen extends ConsumerWidget {
                     child: MyNeuTextButton(
                       buttonColor: const Color(0xFFF06543),
                       buttonHeight: 60,
-                      enableAnimation: true,
                       text: const Text(
                         "Let's Get Started",
                         style: TextStyle(
@@ -111,7 +110,6 @@ class LandingPageScreen extends ConsumerWidget {
                     child: MyNeuTextButton(
                       buttonColor: Colors.white,
                       buttonHeight: 60,
-                      enableAnimation: true,
                       text: Text(
                         "Already have an account",
                       ),

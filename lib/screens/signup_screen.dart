@@ -44,7 +44,6 @@ class SignUpSheet extends ConsumerWidget {
                   .spaceEvenly, // This will space out the children evenly across the row's main axis.
               children: [
                 MyNeuIconButton(
-                  enableAnimation: true,
                   icon: const Icon(Icons.apple),
                   buttonHeight: 50,
                   buttonWidth: 50, // Replace with your actual icon
@@ -54,7 +53,6 @@ class SignUpSheet extends ConsumerWidget {
                   },
                 ),
                 MyNeuIconButton(
-                    enableAnimation: true,
                     icon: const Icon(Icons.email),
                     buttonHeight: 50,
                     buttonWidth: 50, // Replace with your actual icon
@@ -71,7 +69,6 @@ class SignUpSheet extends ConsumerWidget {
                       }
                     }),
                 MyNeuIconButton(
-                    enableAnimation: true,
                     icon: const Icon(
                         Icons.facebook), // Replace with your actual icon
                     buttonHeight: 50,
@@ -173,7 +170,6 @@ class SignUpSheet extends ConsumerWidget {
             SizedBox(
                 height: buttonHeight,
                 child: MyNeuTextButton(
-                    enableAnimation: true,
                     text: const Text('Create Account',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700)),

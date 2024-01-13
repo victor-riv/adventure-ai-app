@@ -208,8 +208,8 @@ class MyNeuTextButton extends MyNeuButton {
 
   const MyNeuTextButton({
     Key? key,
-    required enableAnimation,
     required this.text,
+    bool enableAnimation = true,
     int animationDuration = 100,
     Color borderColor = NeuConstants.neuBlack,
     BorderRadius? borderRadius = NeuConstants.neuBorderRadius,
