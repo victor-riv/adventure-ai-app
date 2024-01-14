@@ -2,24 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
-import 'package:sylas_ai/screens/models/login_form_state/providers/log_in_form_state_provider.dart';
-import 'package:sylas_ai/screens/signup_screen.dart';
+// import 'package:sylas_ai/screens/models/login_form_state/providers/log_in_form_state_provider.dart';
+// import 'package:sylas_ai/screens/new_sign_up_screen.dart';
+// import 'package:sylas_ai/screens/signup_screen.dart';
 
 class LandingPageScreen extends ConsumerWidget {
   const LandingPageScreen({super.key});
-
-  void _navigateToSignUpScreen(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: const Color(0xFFFFFFFF),
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return SignUpSheet();
-        }).whenComplete(() {
-      // Might not be a good idea?
-      ref.watch(loginFormStateNotiferProvider.notifier).resetState();
-    });
-  }
 
   Widget _buildSignUpContent(BuildContext context, WidgetRef ref) {
     return Column(
@@ -70,7 +58,7 @@ class LandingPageScreen extends ConsumerWidget {
                             color: Colors.black, fontWeight: FontWeight.w700),
                       ),
                       onPressed: () {
-                        _navigateToSignUpScreen(context, ref);
+                        Navigator.pushNamed(context, '/signup');
                       },
                     ),
                   ),

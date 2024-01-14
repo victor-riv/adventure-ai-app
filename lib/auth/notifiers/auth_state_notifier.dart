@@ -35,7 +35,8 @@ class AuthStateNotifier extends Notifier<AuthState> {
     final result =
         await _authenticator.loginWithEmailandPassword(email, password);
 
-    if (result.result == AuthResult.success) {
+    if (result.result == AuthResult.success && _authenticator.userId != null) {
+      await saveUserInfo(userId: _authenticator.userId!);
       state = AuthState(
           result: result.result,
           isLoading: false,

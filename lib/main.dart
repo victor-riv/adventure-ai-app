@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sylas_ai/auth/models/auth_result.dart';
 import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
+import 'package:sylas_ai/screens/new_sign_up_screen.dart';
+import 'package:sylas_ai/screens/signup_screen.dart';
 import 'firebase_options.dart';
 import 'screens/landing_page_screen.dart';
 
@@ -30,7 +32,10 @@ class AdventureAi extends ConsumerWidget {
           colorScheme: const ColorScheme.light()
               .copyWith(background: const Color(0xFFFFFFFF)),
         ),
-        home: isLoggedIn ? const LoggedInView() : const LogInView());
+        home: isLoggedIn ? const LoggedInView() : const LogInView(),
+        routes: {
+          '/signup': (context) => SignUpSheet(),
+        });
   }
 }
 
