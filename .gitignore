@@ -27,6 +27,17 @@
 .pub-cache/
 .pub/
 build/
+.flutter-plugins-dependencies
+
+# Ignore generated files
+/generated/
+/android/app/generated_plugin_registrant.*
+linux/flutter/generated*.*
+windows/flutter/generated*.*
+macos/Flutter/Generated*.*
+
+# Ignore build artifacts
+/build/
 
 # Android related
 **/android/**/gradle-wrapper.jar
