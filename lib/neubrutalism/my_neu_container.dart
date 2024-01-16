@@ -31,8 +31,9 @@ class MyNeuContainer extends StatelessWidget {
     this.borderWidth = NeuConstants.neuBorder,
     this.shadowBlurRadius = NeuConstants.neuShadowBlurRadius,
     this.shadowBlurStyle = NeuConstants.neuBlurStyle,
-    this.child,
     this.borderRadius = NeuConstants.neuBorderRadius,
+    this.imagePath,
+    this.child,
   }) : super(key: key);
 
   /// - offset (optional): An Offset that defines the position of the shadow of the container.
@@ -100,6 +101,7 @@ class MyNeuContainer extends StatelessWidget {
   /// By default, it is set to null.
 
   final BorderRadiusGeometry? borderRadius;
+  final String? imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +109,13 @@ class MyNeuContainer extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
+        // Conditionally set the image property of BoxDecoration
+        image: imagePath != null
+            ? DecorationImage(
+                image: AssetImage(imagePath!), // Use AssetImage here
+                fit: BoxFit.cover,
+              )
+            : null,
         borderRadius: borderRadius,
         border: Border.all(
           color: borderColor,
