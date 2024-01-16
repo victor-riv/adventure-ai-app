@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sylas_ai/auth/models/auth_result.dart';
 import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/neubrutalism/my_neu_button.dart';
+import 'package:sylas_ai/screens/custom_app_bar.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
 import 'firebase_options.dart';
 import 'screens/landing_page_screen.dart';
@@ -44,9 +45,9 @@ class LoggedInView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Logged In')),
-      body: Center(
-        child: MyNeuTextButton(
+      body: Column(children: [
+        const CustomAppBar(),
+        MyNeuTextButton(
           text: const Text(
             'Log Out',
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
@@ -55,7 +56,7 @@ class LoggedInView extends ConsumerWidget {
           buttonColor: const Color(0xFFF06543),
           onPressed: ref.read(authStateProvider.notifier).logOut,
         ),
-      ),
+      ]),
     );
   }
 }

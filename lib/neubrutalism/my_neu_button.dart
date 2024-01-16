@@ -39,6 +39,7 @@ class MyNeuButton extends StatefulWidget {
     this.shadowBlurRadius = NeuConstants.neuShadowBlurRadius,
     this.borderWidth = NeuConstants.neuBorder,
     this.animationDuration = 100,
+    this.imagePath,
     required this.child,
   }) : super(key: key);
 
@@ -106,6 +107,8 @@ class MyNeuButton extends StatefulWidget {
   ///Default value is 100ms
   final int animationDuration;
 
+  final String? imagePath;
+
   @override
   State<MyNeuButton> createState() => MyNeuButtonState();
 }
@@ -170,6 +173,7 @@ class MyNeuButtonState extends State<MyNeuButton>
           shadowColor: widget.shadowColor,
           shadowBlurRadius: widget.shadowBlurRadius,
           offset: widget.offset - _animation.value,
+          imagePath: widget.imagePath,
           child: Center(child: widget.child),
         ),
         builder: (context, child) {
@@ -300,4 +304,63 @@ class MyNeuIconButton extends MyNeuButton {
   /// - icon (required) : A Icon Widget to help you add icons.
   ///
   final Icon icon;
+}
+
+class NeuAvatarButton extends MyNeuButton {
+  /// A customizable neubrutalist-style icon button.
+  ///
+  /// The button has an icon, customizable background color, border color,
+  /// and drop shadow. The button's shape can also be customized with a rounded
+  /// border radius. The button's behavior is specified with an `onPressed`
+  /// callback function.
+  ///
+  /// This button is built using Flutter's `Material` widget, and is designed to
+  /// follow the Neubrutalism UI style guidelines.
+  ///
+  /// *[Constants]
+
+  ///   - const neuBlack = Colors.black; /   - const neuDefault1 = Colors.teal;
+  ///   - const neuShadow = Color(0xFF080808);
+  ///
+  ///   - const neuBorder = 3.0;
+  ///   - const neuShadowBlurRadius = 0.0;
+  ///
+  ///   - const neuOffset = Offset(4, 4);
+  ///   - const neuBlurStyle = BlurStyle.solid;
+
+  const NeuAvatarButton({
+    Key? key,
+    required this.imagePath,
+    bool enableAnimation = true,
+    int animationDuration = 100,
+    Color borderColor = NeuConstants.neuBlack,
+    BorderRadius? borderRadius = NeuConstants.neuBorderRadius,
+    double borderWidth = NeuConstants.neuBorder,
+    Color buttonColor = NeuConstants.neuDefault1,
+    double buttonHeight = 50,
+    double buttonWidth = 50,
+    Offset offset = NeuConstants.neuOffset,
+    GestureTapCallback? onPressed,
+    double shadowBlurRadius = NeuConstants.neuShadowBlurRadius,
+    Color shadowColor = NeuConstants.neuShadow,
+  }) : super(
+            animationDuration: animationDuration,
+            borderColor: borderColor,
+            borderRadius: borderRadius,
+            borderWidth: borderWidth,
+            buttonColor: buttonColor,
+            buttonHeight: buttonHeight,
+            buttonWidth: buttonWidth,
+            child: null,
+            enableAnimation: enableAnimation,
+            key: key,
+            offset: offset,
+            onPressed: onPressed,
+            shadowBlurRadius: shadowBlurRadius,
+            shadowColor: shadowColor,
+            imagePath: imagePath);
+
+  /// - icon (required) : A Icon Widget to help you add icons.
+  ///
+  final String? imagePath;
 }
