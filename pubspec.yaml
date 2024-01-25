@@ -81,6 +81,7 @@ flutter:
     - assets/svg/background.svg
     - assets/svg/neuBG.svg
     - assets/png/spongebob.png
+    - assets/jpg/madrid.jpg
    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
