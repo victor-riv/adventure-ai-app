@@ -37,39 +37,57 @@ class SignUpSheet extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment
                     .spaceEvenly, // This will space out the children evenly across the row's main axis.
                 children: [
-                  IconButton(
-                    color: Colors.white,
-                    icon: const Icon(Icons.apple),
-                    onPressed: () {},
+                  Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF999999),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: IconButton(
+                      color: Colors.black,
+                      icon: const Icon(Icons.apple),
+                      onPressed: () {},
+                    ),
                   ),
-                  IconButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.email),
-                      onPressed: () async {
-                        await ref
-                            .read(authStateProvider.notifier)
-                            .loginWithGoogle();
-                        if (ref.watch(authStateProvider).result ==
-                            AuthResult.success) {
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
+                  Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF999999),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: IconButton(
+                        color: Colors.black,
+                        icon: const Icon(Icons.email),
+                        onPressed: () async {
+                          await ref
+                              .read(authStateProvider.notifier)
+                              .loginWithGoogle();
+                          if (ref.watch(authStateProvider).result ==
+                              AuthResult.success) {
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
                           }
-                        }
-                      }),
-                  IconButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.facebook),
-                      onPressed: () async {
-                        await ref
-                            .read(authStateProvider.notifier)
-                            .loginWithFacebook();
-                        if (ref.watch(authStateProvider).result ==
-                            AuthResult.success) {
-                          if (context.mounted) {
-                            Navigator.of(context).pop();
+                        }),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF999999),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: IconButton(
+                        color: Colors.black,
+                        icon: const Icon(Icons.facebook),
+                        onPressed: () async {
+                          await ref
+                              .read(authStateProvider.notifier)
+                              .loginWithFacebook();
+                          if (ref.watch(authStateProvider).result ==
+                              AuthResult.success) {
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                            }
                           }
-                        }
-                      }),
+                        }),
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
@@ -86,9 +104,9 @@ class SignUpSheet extends ConsumerWidget {
                       child: Text(
                         'Or create account with your email',
                         style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ),
                     Expanded(
@@ -98,33 +116,36 @@ class SignUpSheet extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              // SizedBox(
-              //   height: buttonHeight,
-              //   child: TextField(
-              //     onChanged: (newEmail) {
-              //       if (ref.watch(loginFormStateNotiferProvider).emailError) {
-              //         ref
-              //             .watch(loginFormStateNotiferProvider.notifier)
-              //             .clearEmailError();
-              //       }
-              //       ref
-              //           .watch(loginFormStateNotiferProvider.notifier)
-              //           .setEmail(newEmail);
-              //     },
-              //     borderColor:
-              //         ref.watch(loginFormStateNotiferProvider).emailError
-              //             ? Colors.red
-              //             : Colors.black,
-              //     shadowColor:
-              //         ref.watch(loginFormStateNotiferProvider).emailError
-              //             ? Colors.red
-              //             : Colors.black,
-              //     leadingIcon: const Icon(Icons.email),
-              //     searchBarColor: Colors.white,
-              //     hintText: 'Email',
-              //     keyboardType: TextInputType.emailAddress,
-              //   ),
-              // ),
+              SizedBox(
+                height: buttonHeight,
+                child: TextField(
+                  style: const TextStyle(color: Color(0xFF999999)),
+                  cursorColor: const Color(0xFF46b1c9),
+                  decoration: InputDecoration(
+                    hintText: "Email",
+                    hintStyle: const TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: const Color(0xFF1F1F1F),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: if you want rounded corners
+                      borderSide: BorderSide
+                          .none, // Optional: if you don't want the default border
+                    ),
+                  ),
+                  onChanged: (newEmail) {
+                    if (ref.watch(loginFormStateNotiferProvider).emailError) {
+                      ref
+                          .watch(loginFormStateNotiferProvider.notifier)
+                          .clearEmailError();
+                    }
+                    ref
+                        .watch(loginFormStateNotiferProvider.notifier)
+                        .setEmail(newEmail);
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                ),
+              ),
               if (ref.watch(loginFormStateNotiferProvider).emailError) ...[
                 const SizedBox(height: 10),
                 Text(
@@ -139,35 +160,38 @@ class SignUpSheet extends ConsumerWidget {
                   height: 20,
                 )
               ],
-              // SizedBox(
-              //   height: buttonHeight,
-              //   child: NeuTextField(
-              //     leadingIcon: const Icon(Icons.lock),
-              //     searchBarColor: Colors.white,
-              //     hintText: 'Password',
-              //     borderColor:
-              //         ref.watch(loginFormStateNotiferProvider).passwordError
-              //             ? Colors.red
-              //             : Colors.black,
-              //     shadowColor:
-              //         ref.watch(loginFormStateNotiferProvider).passwordError
-              //             ? Colors.red
-              //             : Colors.black,
-              //     obscureText: true,
-              //     onChanged: (newPassword) {
-              //       if (ref
-              //           .watch(loginFormStateNotiferProvider)
-              //           .passwordError) {
-              //         ref
-              //             .watch(loginFormStateNotiferProvider.notifier)
-              //             .clearPasswordError();
-              //       }
-              //       ref
-              //           .watch(loginFormStateNotiferProvider.notifier)
-              //           .setPassword(newPassword);
-              //     },
-              //   ),
-              // ),
+              SizedBox(
+                height: buttonHeight,
+                child: TextField(
+                  style: const TextStyle(color: Color(0xFF999999)),
+                  cursorColor: const Color(0xFF46b1c9),
+                  decoration: InputDecoration(
+                    hintText: "Password",
+                    hintStyle: const TextStyle(color: Colors.black),
+                    filled: true,
+                    fillColor: const Color(0xFF1F1F1F),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                          8), // Optional: if you want rounded corners
+                      borderSide: BorderSide
+                          .none, // Optional: if you don't want the default border
+                    ),
+                  ),
+                  obscureText: true,
+                  onChanged: (newPassword) {
+                    if (ref
+                        .watch(loginFormStateNotiferProvider)
+                        .passwordError) {
+                      ref
+                          .watch(loginFormStateNotiferProvider.notifier)
+                          .clearPasswordError();
+                    }
+                    ref
+                        .watch(loginFormStateNotiferProvider.notifier)
+                        .setPassword(newPassword);
+                  },
+                ),
+              ),
               if (ref.watch(loginFormStateNotiferProvider).passwordError) ...[
                 const SizedBox(height: 10),
                 Text(
@@ -182,10 +206,16 @@ class SignUpSheet extends ConsumerWidget {
                   height: 30,
                 )
               ],
-
               SizedBox(
                   height: buttonHeight,
                   child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xFFE0E348),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 20.0)),
                     onPressed: ref.watch(authStateProvider).isLoading
                         ? null
                         : () async {
@@ -240,131 +270,6 @@ class SignUpSheet extends ConsumerWidget {
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700)),
                   )),
-              // const SizedBox(height: 40),
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       Expanded(
-              //         child: Divider(color: Theme.of(context).dividerColor),
-              //       ),
-              //       const Padding(
-              //         padding: EdgeInsets.symmetric(horizontal: 8.0),
-              //         child: Text(
-              //           'Already have an account?',
-              //           style: TextStyle(
-              //             fontSize: 14,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ),
-              //       Expanded(
-              //         child: Divider(color: Theme.of(context).dividerColor),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-              // const SizedBox(height: 40),
-              // SizedBox(
-              //   height: buttonHeight,
-              //   child: const MyNeuContainer(
-              //     offset: Offset(0, 0),
-              //     color: Colors.white,
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       children: [
-              //         SizedBox(width: 50),
-              //         Icon(
-              //           Icons.apple,
-              //           size: 24,
-              //           color: Colors.black,
-              //         ), // Replace with Facebook icon
-              //         SizedBox(width: 20), // Adjust spacing as needed
-              //         Text(
-              //           "Continue with Apple",
-              //           style: TextStyle(
-              //               color: Colors.black, fontWeight: FontWeight.w700),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 20),
-              // SizedBox(
-              //     height: buttonHeight,
-              //     child: GestureDetector(
-              //       onTap: () async {
-              //         // TODO: Should probably close the bottomSheet before the log in?
-
-              //         await ref
-              //             .read(authStateProvider.notifier)
-              //             .loginWithGoogle();
-
-              //         if (ref.watch(authStateProvider).result ==
-              //             AuthResult.success) {
-              //           if (context.mounted) {
-              //             Navigator.of(context).pop();
-              //           }
-              //         }
-              //       },
-              //       child: const MyNeuContainer(
-              //         offset: Offset(0, 0),
-              //         color: Colors.white,
-              //         child: Row(
-              //           mainAxisAlignment: MainAxisAlignment.start,
-              //           children: [
-              //             SizedBox(width: 50),
-              //             Icon(Icons.email,
-              //                 color: Colors.black), // Replace with your icon
-              //             SizedBox(width: 20), // Adjust spacing as needed
-              //             Text(
-              //               "Continue with Google",
-              //               style: TextStyle(
-              //                   color: Colors.black, fontWeight: FontWeight.w700),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     )),
-              // const SizedBox(height: 20),
-              // SizedBox(
-              //   height: buttonHeight,
-              //   child: GestureDetector(
-              //     onTap: () async {
-              //       await ref
-              //           .read(authStateProvider.notifier)
-              //           .loginWithFacebook();
-              //       if (ref.watch(authStateProvider).result ==
-              //           AuthResult.success) {
-              //         if (context.mounted) {
-              //           Navigator.of(context).pop();
-              //         }
-              //       }
-              //     },
-              //     child: const MyNeuContainer(
-              //       offset: Offset(0, 0),
-              //       color: Colors.white,
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           SizedBox(width: 50),
-              //           Icon(
-              //             Icons.facebook,
-              //             size: 24,
-              //             color: Colors.black,
-              //           ), // Replace with Facebook icon
-              //           SizedBox(width: 20), // Adjust spacing as needed
-              //           Text(
-              //             "Continue with Facebook",
-              //             style: TextStyle(
-              //                 color: Colors.black, fontWeight: FontWeight.w700),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
