@@ -18,7 +18,21 @@ class SignUpSheet extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Color(0xFF999999),
+          ),
+          onPressed: () {
+            ref.watch(loginFormStateNotiferProvider.notifier).clearErrors();
+            Navigator.of(context).pop();
+          },
+        ),
+        backgroundColor: Colors.black,
+        title: const Text(
+          "Login",
+          style: TextStyle(color: Color(0xFF999999)),
+        ),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height * 0.9,
@@ -106,7 +120,7 @@ class SignUpSheet extends ConsumerWidget {
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: Color(0xFF999999)),
                       ),
                     ),
                     Expanded(
@@ -119,11 +133,12 @@ class SignUpSheet extends ConsumerWidget {
               SizedBox(
                 height: buttonHeight,
                 child: TextField(
+                  keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(color: Color(0xFF999999)),
                   cursorColor: const Color(0xFF46b1c9),
                   decoration: InputDecoration(
                     hintText: "Email",
-                    hintStyle: const TextStyle(color: Colors.black),
+                    hintStyle: const TextStyle(color: Color(0xFF999999)),
                     filled: true,
                     fillColor: const Color(0xFF1F1F1F),
                     border: OutlineInputBorder(
@@ -143,7 +158,6 @@ class SignUpSheet extends ConsumerWidget {
                         .watch(loginFormStateNotiferProvider.notifier)
                         .setEmail(newEmail);
                   },
-                  keyboardType: TextInputType.emailAddress,
                 ),
               ),
               if (ref.watch(loginFormStateNotiferProvider).emailError) ...[
@@ -167,7 +181,7 @@ class SignUpSheet extends ConsumerWidget {
                   cursorColor: const Color(0xFF46b1c9),
                   decoration: InputDecoration(
                     hintText: "Password",
-                    hintStyle: const TextStyle(color: Colors.black),
+                    hintStyle: const TextStyle(color: Color(0xFF999999)),
                     filled: true,
                     fillColor: const Color(0xFF1F1F1F),
                     border: OutlineInputBorder(
