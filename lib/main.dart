@@ -6,6 +6,7 @@ import 'package:sylas_ai/auth/models/auth_result.dart';
 import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/providers/unsplash.dart';
 import 'package:sylas_ai/screens/custom_app_bar.dart';
+import 'package:sylas_ai/screens/itinerary_accordion.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
 import 'firebase_options.dart';
 import 'screens/landing_page_screen.dart';
@@ -52,9 +53,35 @@ class LoggedInView extends ConsumerWidget {
     return Scaffold(
       body: Column(children: [
         const CustomAppBar(),
-        TextButton(
-            onPressed: ref.read(authStateProvider.notifier).logOut,
-            child: const Text("Log Out")),
+        Expanded(
+          child: ListView(
+            children: const [
+              CityContainer(
+                cityName: 'Madrid, Spain',
+                imageUrl: 'assets/jpg/madrid.jpg',
+                buttonLabel: 'Plan Now',
+              ),
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xFFE0E348),
+                      foregroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15.0, horizontal: 20.0)),
+                  onPressed: () {
+                    ref.read(authStateProvider.notifier).logOut();
+                  },
+                  child: const Text("Log Out")),
+            ),
+          ],
+        ),
       ]),
     );
   }
@@ -81,8 +108,54 @@ class LogInView extends ConsumerWidget {
                     right: 0,
                     child: Stack(
                       children: [
-                        Image.network(
-                          unsplashResponse.value!.urls.regular,
+                        if (data != null) ...[
+                          Image.network(
+                            unsplashResponse.value!.urls.regular,
+                            fit: BoxFit.contain,
+                          ),
+                        ] else ...[
+                          Image.asset(
+                            'assets/jpg/madrid.jpg',
+                            fit: BoxFit.contain,
+                          )
+                        ],
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: const Alignment(0, 0.5),
+                                colors: [
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(
+                                          0.9), // Color of your background
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+            error: (error, stack) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  const LandingPageScreen(), // Displayed at the bottom
+                  Positioned(
+                    bottom: MediaQuery.of(context).size.height *
+                        0.52, // Adjust this value to position the SVG
+                    left: 0,
+                    right: 0,
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          'asset/jpg/madrid.jpg',
                           fit: BoxFit.contain,
                         ),
                         Positioned.fill(
@@ -108,10 +181,6 @@ class LogInView extends ConsumerWidget {
                 ],
               );
             },
-            error: (error, stack) {
-              print('omfgg');
-              return const Text('Got an error');
-            },
-            loading: () => const CircularProgressIndicator()));
+            loading: () => const Center(child: CircularProgressIndicator())));
   }
 }
