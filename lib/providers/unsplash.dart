@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -36,13 +37,30 @@ class Urls with _$Urls {
 Future<UnsplashResponse?> unsplash(UnsplashRef ref) async {
   final headers = {'Authorization': 'Client-ID '};
 
-  final response = await http
-      .get(Uri.https('api.unsplash.com', '/photos/random'), headers: headers);
+  final destination = getRandomDestination(destinations);
+
+  final response = await http.get(
+      Uri.https('api.unsplash.com', '/photos/random', {'query': destination}),
+      headers: headers);
 
   if (response.statusCode == 200) {
-    final test = UnsplashResponse.fromJson(json.decode(response.body));
-    return test;
+    return UnsplashResponse.fromJson(json.decode(response.body));
   } else {
     return null;
   }
+}
+
+final List<String> destinations = [
+  'Kyoto',
+  'Madrid',
+  'Maldives',
+  'Paris',
+  'Rome'
+];
+
+String getRandomDestination(List<String> destinations) {
+  final random = Random();
+  final index = random.nextInt(destinations.length);
+
+  return destinations[index];
 }
