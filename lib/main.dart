@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sylas_ai/auth/models/auth_result.dart';
 import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
+import 'package:sylas_ai/providers/unsplash.dart';
 import 'package:sylas_ai/screens/custom_app_bar.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
 import 'firebase_options.dart';
@@ -64,43 +65,53 @@ class LogInView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final unsplashResponse = ref.watch(unsplashProvider);
+
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          const LandingPageScreen(), // Displayed at the bottom
-          Positioned(
-            bottom: MediaQuery.of(context).size.height *
-                0.52, // Adjust this value to position the SVG
-            left: 0,
-            right: 0,
-            child: Stack(
-              children: [
-                Image.asset(
-                  'assets/jpg/madrid.jpg',
-                  fit: BoxFit.contain,
-                ),
-                Positioned.fill(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: const Alignment(0, 0.5),
-                        colors: [
-                          Theme.of(context)
-                              .scaffoldBackgroundColor
-                              .withOpacity(0.9), // Color of your background
-                          Colors.transparent,
-                        ],
-                      ),
+        body: unsplashResponse.when(
+            data: (UnsplashResponse? data) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  const LandingPageScreen(), // Displayed at the bottom
+                  Positioned(
+                    bottom: MediaQuery.of(context).size.height *
+                        0.52, // Adjust this value to position the SVG
+                    left: 0,
+                    right: 0,
+                    child: Stack(
+                      children: [
+                        Image.network(
+                          unsplashResponse.value!.urls.regular,
+                          fit: BoxFit.contain,
+                        ),
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: const Alignment(0, 0.5),
+                                colors: [
+                                  Theme.of(context)
+                                      .scaffoldBackgroundColor
+                                      .withOpacity(
+                                          0.9), // Color of your background
+                                  Colors.transparent,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+                ],
+              );
+            },
+            error: (error, stack) {
+              print('omfgg');
+              return const Text('Got an error');
+            },
+            loading: () => const CircularProgressIndicator()));
   }
 }
