@@ -7,39 +7,36 @@ class CustomAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const CircleAvatar(
-              radius: 20,
-              backgroundImage: AssetImage('assets/jpg/madrid.jpg'),
-              // child: Text('V'),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hello,',
-                  style: TextStyle(color: Colors.white),
-                ),
-                Text(
-                  'Victor Rivera',
-                  style: TextStyle(color: Colors.white),
-                )
-              ],
-            ),
-            const Spacer(),
-            GestureDetector(
-              child: const HamburgerIcon(),
-              onTap: () {},
-            )
-          ],
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage('assets/jpg/madrid.jpg'),
+            // child: Text('V'),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hello,',
+                style: TextStyle(color: Colors.white),
+              ),
+              Text(
+                'Victor Rivera',
+                style: TextStyle(color: Colors.white),
+              )
+            ],
+          ),
+          const Spacer(),
+          GestureDetector(
+            child: const HamburgerIcon(),
+            onTap: () {},
+          )
+        ],
       ),
     );
   }

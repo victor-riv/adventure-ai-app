@@ -6,7 +6,7 @@ import 'package:sylas_ai/auth/models/auth_result.dart';
 import 'package:sylas_ai/auth/backend/providers/auth_state_provider.dart';
 import 'package:sylas_ai/providers/unsplash.dart';
 import 'package:sylas_ai/screens/custom_app_bar.dart';
-import 'package:sylas_ai/screens/itinerary_accordion.dart';
+import 'package:sylas_ai/screens/itinerary_card.dart';
 import 'package:sylas_ai/screens/signup_screen.dart';
 import 'firebase_options.dart';
 import 'screens/landing_page_screen.dart';
@@ -51,38 +51,59 @@ class LoggedInView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: Column(children: [
-        const CustomAppBar(),
-        Expanded(
-          child: ListView(
-            children: const [
-              CityContainer(
-                cityName: 'Madrid, Spain',
-                imageUrl: 'assets/jpg/madrid.jpg',
-                buttonLabel: 'Plan Now',
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const CustomAppBar(),
+          const Text(
+            "Let's Make",
+            style: TextStyle(
+                color: Colors.white, fontSize: 42, fontWeight: FontWeight.bold),
+          ),
+          const Text(
+            "Some Plans",
+            style: TextStyle(
+                color: Colors.white, fontSize: 42, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            "Create or edit an itinerary below",
+            style: TextStyle(
+                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w100),
+          ),
+          Expanded(
+            child: ListView(
+              children: const [
+                ItineraryCard(
+                  cityName: 'Madrid, Spain',
+                  imageUrl: 'assets/jpg/madrid.jpg',
+                  buttonLabel: 'Plan Now',
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xFFE0E348),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15.0, horizontal: 20.0)),
+                    onPressed: () {
+                      ref.read(authStateProvider.notifier).logOut();
+                    },
+                    child: const Text("Log Out")),
               ),
             ],
           ),
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: TextButton(
-                  style: TextButton.styleFrom(
-                      backgroundColor: const Color(0xFFE0E348),
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15.0, horizontal: 20.0)),
-                  onPressed: () {
-                    ref.read(authStateProvider.notifier).logOut();
-                  },
-                  child: const Text("Log Out")),
-            ),
-          ],
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
